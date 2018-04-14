@@ -23,13 +23,11 @@ type
     function GetValue(): T;
     procedure SetValue(const AValue: T);
   public
-    constructor Create(const AValue: T);
-
     procedure Reset();
     function ValueOr(const AValue: T): T;
 
     class operator Implicit(const AValue: T): TOptional<T>;
-    class operator Implicit(const AEmptyValue: TEmpty): TOptional<T>;
+    class operator Implicit(const AEmpty: TEmpty): TOptional<T>;
     class operator Implicit(const AOptional: TOptional<T>): Pointer;
 
     property Value: T read GetValue write SetValue;
@@ -55,11 +53,6 @@ begin
   FIsAssignedValue := True;
 end;
 
-constructor TOptional<T>.Create(const AValue: T);
-begin
-  SetValue(AValue);
-end;
-
 procedure TOptional<T>.Reset();
 begin
   FIsAssignedValue := False;
@@ -75,10 +68,10 @@ end;
 
 class operator TOptional<T>.Implicit(const AValue: T): TOptional<T>;
 begin
-  Result := TOptional<T>.Create(AValue);
+  Result.SetValue(AValue);
 end;
 
-class operator TOptional<T>.Implicit(const AEmptyValue: TEmpty): TOptional<T>;
+class operator TOptional<T>.Implicit(const AEmpty: TEmpty): TOptional<T>;
 begin
   Result.Reset();
 end;
