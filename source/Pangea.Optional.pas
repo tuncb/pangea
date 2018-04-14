@@ -80,7 +80,7 @@ end;
 
 class operator TOptional<T>.Implicit(const AEmptyValue: TEmpty): TOptional<T>;
 begin
-  Result.FIsAssignedValue := False;
+  Result.Reset();
 end;
 
 class operator TOptional<T>.Implicit(const AOptional: TOptional<T>): Pointer;
