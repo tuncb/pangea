@@ -11,7 +11,7 @@ type
 
 type
   TEmpty = record
-    class operator Implicit(const ANotNeeded: TEmpty): Pointer;
+    class operator Implicit(const AEmpty: TEmpty): Pointer;
   end;
 
 type
@@ -91,7 +91,7 @@ begin
     Result := nil;
 end;
 
-class operator TEmpty.Implicit(const ANotNeeded: TEmpty): Pointer;
+class operator TEmpty.Implicit(const AEmpty: TEmpty): Pointer;
 begin
   Result := nil;
 end;
