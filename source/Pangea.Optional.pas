@@ -44,7 +44,7 @@ begin
   if FIsAssignedValue then
     Result := FValue
   else
-    raise TOptionalBadAccessException.Create('Attampted acces to empty optional');
+    raise TOptionalBadAccessException.Create('Attempted access to empty optional');
 end;
 
 procedure TOptional<T>.SetValue(const AValue: T);
