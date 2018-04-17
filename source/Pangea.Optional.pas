@@ -11,13 +11,12 @@ type
 
 type
   TEmpty = record
-    class operator Implicit(const AEmpty: TEmpty): Pointer;
   end;
 
 type
   TOptional<T> = record
   strict private
-    FIsAssignedValue: Boolean;
+    FHasValue: Boolean;
     FValue: T;
 
     function GetValue(): T;
@@ -28,10 +27,9 @@ type
 
     class operator Implicit(const AValue: T): TOptional<T>;
     class operator Implicit(const AEmpty: TEmpty): TOptional<T>;
-    class operator Implicit(const AOptional: TOptional<T>): Pointer;
 
     property Value: T read GetValue write SetValue;
-    property HasValue: boolean read FIsAssignedValue;
+    property HasValue: boolean read FHasValue;
   end;
 
 const
@@ -41,7 +39,7 @@ implementation
 
 function TOptional<T>.GetValue(): T;
 begin
-  if FIsAssignedValue then
+  if FHasValue then
     Result := FValue
   else
     raise TOptionalBadAccessException.Create('Attempted access to empty optional');
@@ -50,17 +48,17 @@ end;
 procedure TOptional<T>.SetValue(const AValue: T);
 begin
   FValue := AValue;
-  FIsAssignedValue := True;
+  FHasValue := True;
 end;
 
 procedure TOptional<T>.Reset();
 begin
-  FIsAssignedValue := False;
+  FHasValue := False;
 end;
 
 function TOptional<T>.ValueOr(const AValue: T): T;
 begin
-  if FIsAssignedValue then
+  if FHasValue then
     Result := FValue
   else
     Result := AValue;
@@ -74,19 +72,6 @@ end;
 class operator TOptional<T>.Implicit(const AEmpty: TEmpty): TOptional<T>;
 begin
   Result.Reset();
-end;
-
-class operator TOptional<T>.Implicit(const AOptional: TOptional<T>): Pointer;
-begin
-  if AOptional.HasValue then
-    Result := @AOptional.FValue
-  else
-    Result := nil;
-end;
-
-class operator TEmpty.Implicit(const AEmpty: TEmpty): Pointer;
-begin
-  Result := nil;
 end;
 
 end.

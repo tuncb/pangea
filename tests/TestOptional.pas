@@ -17,41 +17,28 @@ type
 
 implementation
 
-type
-  PInteger = ^Integer;
-
-procedure ExpectsNilInteger(AVar: PInteger);
-begin
-  Assert.IsTrue(AVar = nil);
-end;
-
-procedure ExpectsPIntegerEqualToValue(AVar: PInteger; AValue: Integer);
-begin
-  Assert.AreEqual(AVar^, AValue);
-end;
-
 procedure TTestOptional.TestEmpty();
+const
+  VAL = 20;
 var
   LOptional: TOptional<Integer>;
 begin
-  ExpectsNilInteger(EMPTY);
-
   LOptional := EMPTY;
   Assert.IsFalse(LOptional.HasValue);
-  Assert.IsTrue(LOptional.ValueOr(20) = 20);
+  Assert.IsTrue(LOptional.ValueOr(VAL) = VAL);
 end;
 
 procedure TTestOptional.TestFilled();
 const
   VAL = 10;
+  NOT_VAL = 20;
 var
   LOptional: TOptional<Integer>;
 begin
   LOptional := VAL;
   Assert.IsTrue(LOptional.HasValue);
   Assert.IsTrue(LOptional.Value = VAL);
-  Assert.IsTrue(LOptional.ValueOr(20) = VAL);
-  ExpectsPIntegerEqualToValue(LOptional, VAL);
+  Assert.IsTrue(LOptional.ValueOr(NOT_VAL) = VAL);
 
   LOptional.Reset();
   Assert.IsFalse(LOptional.HasValue);
