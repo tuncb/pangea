@@ -31,6 +31,8 @@ requires
   rtl;
 
 contains
-  Pangea.Optional in 'source\Pangea.Optional.pas';
+  Pangea.Optional in 'source\Pangea.Optional.pas',
+  Pangea.ScopeAction in 'source\Pangea.ScopeAction.pas',
+  Pangea.MemoryGuard in 'source\Pangea.MemoryGuard.pas';
 
 end.
