@@ -14,6 +14,12 @@ function DoOnScopeExit(const AAction: TProc): IScopeAction;
 function DoOnScopeSuccess(const AAction: TProc): IScopeAction;
 function DoOnScopeFailure(const AAction: TProc): IScopeAction;
 
+function GuardMemoryOnExit(AObjectPtrs: array of Pointer): IScopeAction;
+//function FreeAndNilOnScopeFailure(AObjectPtrs: array of PTObject): IScopeAction;
+
+//function FreeAndNilOnScopeExit(AObjectPtrs: array of PTObject): IScopeAction;
+//function FreeAndNilOnScopeFailure(AObjectPtrs: array of PTObject): IScopeAction;
+
 implementation
 
 type
@@ -98,5 +104,31 @@ function DoOnScopeFailure(const AAction: TProc): IScopeAction;
 begin
   Result := TScopeFailureAction.Create(AAction);
 end;
+
+function GuardMemoryOnExit(AObjectPtrs: array of Pointer): IScopeAction;
+begin
+  Result := DoOnScopeExit(
+  procedure()
+  var
+    LPointer: Pointer;
+  begin
+    for LPointer in AObjectPtrs do
+      FreeAndNil(LPointer^);
+  end);
+end;
+
+{
+function FreeAndNilOnScopeFailure(AObjectPtrs: array of PTObject): IScopeAction;
+begin
+  Result := DoOnScopeFailure(
+  procedure()
+  var
+    LPTObject: PTObject;
+  begin
+    FreeAndNil(LPTObject^);
+  end);
+end;
+
+}
 
 end.

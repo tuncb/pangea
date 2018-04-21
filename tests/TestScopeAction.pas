@@ -15,6 +15,8 @@ type
     procedure TestDoOnScopeSuccess();
     [Test]
     procedure TestDoOnScopeFailure();
+    [Test]
+    procedure TestGuardMemoryOnExit();
   end;
 
 implementation
@@ -32,9 +34,44 @@ type
     property Value: T read FValue write FValue;
   end;
 
+type
+  TDestructorLogger = class
+  strict private
+    FIsDestructorCalled: PBoolean;
+  public
+    constructor Create(var AIsDestructorCalled: Boolean);
+    destructor Destroy(); override;
+  end;
+
+type
+  PTDestructorLogger = ^TDestructorLogger;
+
+constructor TDestructorLogger.Create(var AIsDestructorCalled: Boolean);
+begin
+  inherited Create();
+
+  AIsDestructorCalled := False;
+  FIsDestructorCalled := @AIsDestructorCalled;
+end;
+
+destructor TDestructorLogger.Destroy();
+begin
+  FIsDestructorCalled^ := True;
+  inherited Destroy();
+end;
+
 constructor TWrapper<T>.Create(const AValue: T);
 begin
   FValue := AValue;
+end;
+
+procedure LogDestruction(var AIsDestructorCalled: Boolean;
+  const AExecuteGuard: TFunc<PTDestructorLogger, IScopeAction>);
+var
+  LLogger: TDestructorLogger;
+begin
+  LLogger := TDestructorLogger.Create(AIsDestructorCalled);
+  AExecuteGuard(@LLogger);
 end;
 
 procedure MultiplyByTwoOnScopeExit(AWrapper: TWrapper<Integer>;
@@ -149,6 +186,20 @@ begin
   finally
     FreeAndNil(LWrapper);
   end;
+end;
+
+procedure TTestScopeAction.TestGuardMemoryOnExit();
+var
+  LIsDestructorCalled: Boolean;
+begin
+  LIsDestructorCalled := False;
+  LogDestruction(LIsDestructorCalled,
+    function(APLogger: PTDestructorLogger): IScopeAction
+    begin
+      Result := GuardMemoryOnExit([APLogger]);
+    end);
+
+  Assert.IsTrue(LIsDestructorCalled);
 end;
 
 initialization
