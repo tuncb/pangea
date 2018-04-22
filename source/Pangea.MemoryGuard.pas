@@ -5,17 +5,35 @@ interface
 uses
   Pangea.ScopeAction;
 
-type
-  PTObject = ^TObject;
+function ClearAndGuardMemoryOnExit(var AObject): IScopeAction; overload;
+function ClearAndGuardMemoryOnExit(var AObject1, AObject2): IScopeAction; overload;
+function ClearAndGuardMemoryOnExit(var AObject1, AObject2, AObject3): IScopeAction; overload;
+function ClearAndGuardMemoryOnExit
+  (var AObject1, AObject2, AObject3, AObject4): IScopeAction; overload;
+function ClearAndGuardMemoryOnExit
+  (var AObject1, AObject2, AObject3, AObject4, AObject5): IScopeAction; overload;
+function ClearAndGuardMemoryOnExit
+  (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6): IScopeAction; overload;
+function ClearAndGuardMemoryOnExit
+  (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, AObject7): IScopeAction; overload;
+function ClearAndGuardMemoryOnExit
+  (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, AObject7, AObject8): IScopeAction; overload;
 
-type
-  TMemoryGuard = class
-  public
-    class function ClearAndGuardOnExit();
-  end;
-
-function ClearAndGuardMemoryOnExit(AObjectPtrs: TArray<PTObject>): IScopeAction;
-function ClearAndGuardMemoryOnFailure(AObjectPtrs: TArray<PTObject>): IScopeAction;
+function ClearAndGuardMemoryOnFailure(var AObject): IScopeAction; overload;
+function ClearAndGuardMemoryOnFailure(var AObject1, AObject2): IScopeAction; overload;
+function ClearAndGuardMemoryOnFailure(var AObject1, AObject2, AObject3): IScopeAction; overload;
+function ClearAndGuardMemoryOnFailure
+  (var AObject1, AObject2, AObject3, AObject4): IScopeAction; overload;
+function ClearAndGuardMemoryOnFailure
+  (var AObject1, AObject2, AObject3, AObject4, AObject5): IScopeAction; overload;
+function ClearAndGuardMemoryOnFailure
+  (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6): IScopeAction; overload;
+function ClearAndGuardMemoryOnFailure
+  (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, 
+  AObject7): IScopeAction; overload;
+function ClearAndGuardMemoryOnFailure
+  (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, 
+  AObject7, AObject8): IScopeAction; overload;
 
 implementation
 
@@ -25,9 +43,9 @@ uses
 type
   TMemoryGuardOnExit = class(TInterfacedObject, IScopeAction)
   strict private
-    FPointers: TArray<PTObject>;
+    FPointers: TArray<PPointer>;
   public
-    constructor Create(const AObjectPtrs: TArray<PTObject>);
+    constructor Create(const AObjectPtrs: TArray<PPointer>);
     destructor Destroy(); override;
 
     procedure Cancel();
@@ -39,7 +57,7 @@ type
     destructor Destroy(); override;
   end;
 
-constructor TMemoryGuardOnExit.Create(const AObjectPtrs: TArray<PTObject>);
+constructor TMemoryGuardOnExit.Create(const AObjectPtrs: TArray<PPointer>);
 begin
   inherited Create();
   FPointers := AObjectPtrs;
@@ -72,26 +90,180 @@ begin
   inherited Destroy();
 end;
 
-procedure ClearMemory(AObjectPtrs: TArray<PTObject>);
-var 
-  LIndex: Integer;
+function ClearAndGuardMemoryOnExit(var AObject): IScopeAction;
 begin
-  for LIndex := Low(AObjectPtrs) to High(AObjectPtrs) do
-  begin
-    (AObjectPtrs[LIndex])^ := nil;
-  end;  
+  TObject(AObject) := nil;
+  Result := TMemoryGuardOnExit.Create([Addr(AObject)]);
 end;
 
-function ClearAndGuardMemoryOnExit(AObjectPtrs: TArray<PTObject>): IScopeAction;
+function ClearAndGuardMemoryOnExit(var AObject1; var AObject2): IScopeAction;
 begin
-  ClearMemory(AObjectPtrs);
-  Result := TMemoryGuardOnExit.Create(AObjectPtrs);
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  Result := TMemoryGuardOnExit.Create([Addr(AObject1), Addr(AObject2)]);
 end;
 
-function ClearAndGuardMemoryOnFailure(AObjectPtrs: TArray<PTObject>): IScopeAction;
+function ClearAndGuardMemoryOnExit(var AObject1; var AObject2; var AObject3): IScopeAction;
 begin
-  ClearMemory(AObjectPtrs);
-  Result := TMemoryGuardOnFailure.Create(AObjectPtrs);
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  Result := TMemoryGuardOnExit.Create([Addr(AObject1), Addr(AObject2), Addr(AObject3)]);
+end;
+
+function ClearAndGuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  Result := TMemoryGuardOnExit.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4)]);  
+end;
+
+function ClearAndGuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
+  var AObject5): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  TObject(AObject5) := nil;
+  Result := TMemoryGuardOnExit.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5)]);    
+end;
+
+function ClearAndGuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
+  var AObject5; var AObject6): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  TObject(AObject5) := nil;
+  TObject(AObject6) := nil;
+  Result := TMemoryGuardOnExit.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
+    Addr(AObject6)]);   
+end;
+
+function ClearAndGuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
+  var AObject5; var AObject6; var AObject7): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  TObject(AObject5) := nil;
+  TObject(AObject6) := nil;
+  TObject(AObject7) := nil;
+  Result := TMemoryGuardOnExit.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
+    Addr(AObject6), Addr(AObject7)]);    
+end;
+
+function ClearAndGuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
+  var AObject5; var AObject6; var AObject7; var AObject8): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  TObject(AObject5) := nil;
+  TObject(AObject6) := nil;
+  TObject(AObject7) := nil;
+  TObject(AObject8) := nil;
+  Result := TMemoryGuardOnExit.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
+    Addr(AObject6), Addr(AObject7), Addr(AObject8)]);
+end;
+
+function ClearAndGuardMemoryOnFailure(var AObject): IScopeAction;
+begin
+  TObject(AObject) := nil;
+  Result := TMemoryGuardOnFailure.Create([Addr(AObject)]);
+end;
+
+function ClearAndGuardMemoryOnFailure(var AObject1; var AObject2): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  Result := TMemoryGuardOnFailure.Create([Addr(AObject1), Addr(AObject2)]);
+end;
+
+function ClearAndGuardMemoryOnFailure(var AObject1; var AObject2; var AObject3): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  Result := TMemoryGuardOnFailure.Create([Addr(AObject1), Addr(AObject2), Addr(AObject3)]);
+end;
+
+function ClearAndGuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  Result := TMemoryGuardOnFailure.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4)]);  
+end;
+
+function ClearAndGuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
+  var AObject5): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  TObject(AObject5) := nil;
+  Result := TMemoryGuardOnFailure.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5)]);    
+end;
+
+function ClearAndGuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
+  var AObject5; var AObject6): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  TObject(AObject5) := nil;
+  TObject(AObject6) := nil;
+  Result := TMemoryGuardOnFailure.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
+    Addr(AObject6)]);   
+end;
+
+function ClearAndGuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
+  var AObject5; var AObject6; var AObject7): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  TObject(AObject5) := nil;
+  TObject(AObject6) := nil;
+  TObject(AObject7) := nil;
+  Result := TMemoryGuardOnFailure.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
+    Addr(AObject6), Addr(AObject7)]);    
+end;
+
+function ClearAndGuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
+  var AObject5; var AObject6; var AObject7; var AObject8): IScopeAction;
+begin
+  TObject(AObject1) := nil;
+  TObject(AObject2) := nil;
+  TObject(AObject3) := nil;
+  TObject(AObject4) := nil;
+  TObject(AObject5) := nil;
+  TObject(AObject6) := nil;
+  TObject(AObject7) := nil;
+  TObject(AObject8) := nil;
+  Result := TMemoryGuardOnFailure.Create(
+    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
+    Addr(AObject6), Addr(AObject7), Addr(AObject8)]);
 end;
 
 end.
