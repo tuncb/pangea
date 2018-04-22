@@ -10,13 +10,11 @@ type
   TTestScopeAction = class
   public
     [Test]
-    procedure TestDoOnScopeExit();
+    procedure TestExecuteOnScopeExit();
     [Test]
-    procedure TestDoOnScopeSuccess();
+    procedure TestExecuteOnScopeSuccess();
     [Test]
-    procedure TestDoOnScopeFailure();
-    [Test]
-    procedure TestGuardMemoryOnExit();
+    procedure TestExecuteOnScopeFailure();
   end;
 
 implementation
@@ -34,44 +32,9 @@ type
     property Value: T read FValue write FValue;
   end;
 
-type
-  TDestructorLogger = class
-  strict private
-    FIsDestructorCalled: PBoolean;
-  public
-    constructor Create(var AIsDestructorCalled: Boolean);
-    destructor Destroy(); override;
-  end;
-
-type
-  PTDestructorLogger = ^TDestructorLogger;
-
-constructor TDestructorLogger.Create(var AIsDestructorCalled: Boolean);
-begin
-  inherited Create();
-
-  AIsDestructorCalled := False;
-  FIsDestructorCalled := @AIsDestructorCalled;
-end;
-
-destructor TDestructorLogger.Destroy();
-begin
-  FIsDestructorCalled^ := True;
-  inherited Destroy();
-end;
-
 constructor TWrapper<T>.Create(const AValue: T);
 begin
   FValue := AValue;
-end;
-
-procedure LogDestruction(var AIsDestructorCalled: Boolean;
-  const AExecuteGuard: TFunc<PTDestructorLogger, IScopeAction>);
-var
-  LLogger: TDestructorLogger;
-begin
-  LLogger := TDestructorLogger.Create(AIsDestructorCalled);
-  AExecuteGuard(@LLogger);
 end;
 
 procedure MultiplyByTwoOnScopeExit(AWrapper: TWrapper<Integer>;
@@ -79,7 +42,7 @@ procedure MultiplyByTwoOnScopeExit(AWrapper: TWrapper<Integer>;
 var
   LAction: IScopeAction;
 begin
-  LAction := DoOnScopeExit(procedure()
+  LAction := ExecuteOnScopeExit(procedure()
     begin
       AWrapper.Value := AWrapper.Value * 2;
     end);
@@ -91,7 +54,7 @@ procedure MultiplyByTwoOnScopeSuccess(AWrapper: TWrapper<Integer>;
 var
   LAction: IScopeAction;
 begin
-  LAction := DoOnScopeSuccess(procedure()
+  LAction := ExecuteOnScopeSuccess(procedure()
     begin
       AWrapper.Value := AWrapper.Value * 2;
     end);
@@ -104,7 +67,7 @@ procedure MultiplyByTwoOnScopeFailure(AWrapper: TWrapper<Integer>;
 var
   LAction: IScopeAction;
 begin
-  LAction := DoOnScopeFailure(procedure()
+  LAction := ExecuteOnScopeFailure(procedure()
     begin
       AWrapper.Value := AWrapper.Value * 2;
     end);
@@ -112,7 +75,7 @@ begin
   ADoBeforeChange(LAction);
 end;
 
-procedure TTestScopeAction.TestDoOnScopeExit();
+procedure TTestScopeAction.TestExecuteOnScopeExit();
 const
   VAL = 10;
 var
@@ -134,7 +97,7 @@ begin
   end;
 end;
 
-procedure TTestScopeAction.TestDoOnScopeSuccess();
+procedure TTestScopeAction.TestExecuteOnScopeSuccess();
 const
   VAL = 10;
 var
@@ -161,7 +124,7 @@ begin
   end;
 end;
 
-procedure TTestScopeAction.TestDoOnScopeFailure();
+procedure TTestScopeAction.TestExecuteOnScopeFailure();
 const
   VAL = 10;
 var
@@ -186,20 +149,6 @@ begin
   finally
     FreeAndNil(LWrapper);
   end;
-end;
-
-procedure TTestScopeAction.TestGuardMemoryOnExit();
-var
-  LIsDestructorCalled: Boolean;
-begin
-  LIsDestructorCalled := False;
-  LogDestruction(LIsDestructorCalled,
-    function(APLogger: PTDestructorLogger): IScopeAction
-    begin
-      Result := GuardMemoryOnExit([APLogger]);
-    end);
-
-  Assert.IsTrue(LIsDestructorCalled);
 end;
 
 initialization

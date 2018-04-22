@@ -45,7 +45,8 @@ uses
   DUnitX.Attributes in '..\DUnitX.Attributes.pas',
   DUnitX.Types in '..\DUnitX.Types.pas',
   DUnitX.Timeout in '..\DUnitX.Timeout.pas',
-  TestScopeAction in 'tests\TestScopeAction.pas';
+  TestScopeAction in 'tests\TestScopeAction.pas',
+  TestMemoryGuard in 'tests\TestMemoryGuard.pas';
 
 var
   LRunner : ITestRunner;

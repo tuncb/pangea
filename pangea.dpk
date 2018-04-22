@@ -18,7 +18,7 @@ package pangea;
 {$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
 {$STACKFRAMES ON}
-{$TYPEDADDRESS OFF}
+{$TYPEDADDRESS ON}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
@@ -32,6 +32,7 @@ requires
 
 contains
   Pangea.Optional in 'source\Pangea.Optional.pas',
-  Pangea.ScopeAction in 'source\Pangea.ScopeAction.pas';
+  Pangea.ScopeAction in 'source\Pangea.ScopeAction.pas',
+  Pangea.MemoryGuard in 'source\Pangea.MemoryGuard.pas';
 
 end.
