@@ -69,7 +69,7 @@ end;
 
 function CreateDummy(): TDummy;
 begin
-  ClearAndGuardObjectsOnFailure(Result);
+  ClearAndFreeNilOnFailure(Result);
   Result := TDummy.Create();
 end;
 
@@ -77,7 +77,7 @@ procedure TTestMemoryGuard.TestSyntax();
 var
   LDummy1, LDummy2, LDummy3: TDummy;
 begin
-  ClearAndGuardObjectsOnExit(LDummy1, LDummy2, LDummy3);
+  ClearAndFreeNilOnExit(LDummy1, LDummy2, LDummy3);
   LDummy1 := TDummy.Create();
   LDummy2 := TDummy.Create();
   LDummy3 := CreateDummy();
@@ -108,47 +108,47 @@ procedure TTestMemoryGuard.TestMemoryGuardOnExit();
 begin
   TestForNrObjects(1, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      Result := ClearAndGuardObjectsOnExit(AObjects[0]);
+      Result := ClearAndFreeNilOnExit(AObjects[0]);
     end);
 
   TestForNrObjects(2, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      Result := ClearAndGuardObjectsOnExit(AObjects[0], AObjects[1]);
+      Result := ClearAndFreeNilOnExit(AObjects[0], AObjects[1]);
     end);
 
   TestForNrObjects(3, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      Result := ClearAndGuardObjectsOnExit(AObjects[0], AObjects[1], AObjects[2]);
+      Result := ClearAndFreeNilOnExit(AObjects[0], AObjects[1], AObjects[2]);
     end);
 
   TestForNrObjects(4, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      Result := ClearAndGuardObjectsOnExit(
+      Result := ClearAndFreeNilOnExit(
         AObjects[0], AObjects[1], AObjects[2], AObjects[3]);
     end);
 
   TestForNrObjects(5, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      Result := ClearAndGuardObjectsOnExit(
+      Result := ClearAndFreeNilOnExit(
         AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4]);
     end);
 
   TestForNrObjects(6, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      Result := ClearAndGuardObjectsOnExit(
+      Result := ClearAndFreeNilOnExit(
         AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5]);
     end);
 
   TestForNrObjects(7, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      Result := ClearAndGuardObjectsOnExit(
+      Result := ClearAndFreeNilOnExit(
         AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
         AObjects[6]);
     end);
 
   TestForNrObjects(8, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      Result := ClearAndGuardObjectsOnExit(
+      Result := ClearAndFreeNilOnExit(
         AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
         AObjects[6], AObjects[7]);
     end);
