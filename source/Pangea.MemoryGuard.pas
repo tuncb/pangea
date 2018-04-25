@@ -19,19 +19,19 @@ function ClearThenFreeNilOnExit
 function ClearThenFreeNilOnExit
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, AObject7, AObject8): IScopeAction; overload;
 
-function ClearThenFreeNilOnException(var AObject): IScopeAction; overload;
-function ClearThenFreeNilOnException(var AObject1, AObject2): IScopeAction; overload;
-function ClearThenFreeNilOnException(var AObject1, AObject2, AObject3): IScopeAction; overload;
-function ClearThenFreeNilOnException
+function ClearThenFreeNilOnFailure(var AObject): IScopeAction; overload;
+function ClearThenFreeNilOnFailure(var AObject1, AObject2): IScopeAction; overload;
+function ClearThenFreeNilOnFailure(var AObject1, AObject2, AObject3): IScopeAction; overload;
+function ClearThenFreeNilOnFailure
   (var AObject1, AObject2, AObject3, AObject4): IScopeAction; overload;
-function ClearThenFreeNilOnException
+function ClearThenFreeNilOnFailure
   (var AObject1, AObject2, AObject3, AObject4, AObject5): IScopeAction; overload;
-function ClearThenFreeNilOnException
+function ClearThenFreeNilOnFailure
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6): IScopeAction; overload;
-function ClearThenFreeNilOnException
+function ClearThenFreeNilOnFailure
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, 
   AObject7): IScopeAction; overload;
-function ClearThenFreeNilOnException
+function ClearThenFreeNilOnFailure
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, 
   AObject7, AObject8): IScopeAction; overload;
 
@@ -93,14 +93,14 @@ end;
 function ClearThenFreeNilOnExit(var AObject): IScopeAction;
 begin
   TObject(AObject) := nil;
-  Result := TMemoryGuardOnExit.Create([Addr(AObject)]);
+  Result := TMemoryGuardOnExit.Create([@AObject]);
 end;
 
 function ClearThenFreeNilOnExit(var AObject1; var AObject2): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
-  Result := TMemoryGuardOnExit.Create([Addr(AObject1), Addr(AObject2)]);
+  Result := TMemoryGuardOnExit.Create([@AObject1, @AObject2]);
 end;
 
 function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3): IScopeAction;
@@ -108,7 +108,7 @@ begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
   TObject(AObject3) := nil;
-  Result := TMemoryGuardOnExit.Create([Addr(AObject1), Addr(AObject2), Addr(AObject3)]);
+  Result := TMemoryGuardOnExit.Create([@AObject1, @AObject2, @AObject3]);
 end;
 
 function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
@@ -118,7 +118,7 @@ begin
   TObject(AObject3) := nil;
   TObject(AObject4) := nil;
   Result := TMemoryGuardOnExit.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4)]);  
+    [@AObject1, @AObject2, @AObject3, @AObject4]);  
 end;
 
 function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
@@ -130,7 +130,7 @@ begin
   TObject(AObject4) := nil;
   TObject(AObject5) := nil;
   Result := TMemoryGuardOnExit.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5)]);    
+    [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5]);    
 end;
 
 function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
@@ -143,8 +143,8 @@ begin
   TObject(AObject5) := nil;
   TObject(AObject6) := nil;
   Result := TMemoryGuardOnExit.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
-    Addr(AObject6)]);   
+    [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5,
+    @AObject6]);   
 end;
 
 function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
@@ -158,8 +158,8 @@ begin
   TObject(AObject6) := nil;
   TObject(AObject7) := nil;
   Result := TMemoryGuardOnExit.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
-    Addr(AObject6), Addr(AObject7)]);    
+    [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5,
+    @AObject6, @AObject7]);    
 end;
 
 function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
@@ -174,42 +174,42 @@ begin
   TObject(AObject7) := nil;
   TObject(AObject8) := nil;
   Result := TMemoryGuardOnExit.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
-    Addr(AObject6), Addr(AObject7), Addr(AObject8)]);
+    [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5,
+    @AObject6, @AObject7, @AObject8]);
 end;
 
-function ClearThenFreeNilOnException(var AObject): IScopeAction;
+function ClearThenFreeNilOnFailure(var AObject): IScopeAction;
 begin
   TObject(AObject) := nil;
-  Result := TMemoryGuardOnFailure.Create([Addr(AObject)]);
+  Result := TMemoryGuardOnFailure.Create([@AObject]);
 end;
 
-function ClearThenFreeNilOnException(var AObject1; var AObject2): IScopeAction;
+function ClearThenFreeNilOnFailure(var AObject1; var AObject2): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
-  Result := TMemoryGuardOnFailure.Create([Addr(AObject1), Addr(AObject2)]);
+  Result := TMemoryGuardOnFailure.Create([@AObject1, @AObject2]);
 end;
 
-function ClearThenFreeNilOnException(var AObject1; var AObject2; var AObject3): IScopeAction;
+function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
   TObject(AObject3) := nil;
-  Result := TMemoryGuardOnFailure.Create([Addr(AObject1), Addr(AObject2), Addr(AObject3)]);
+  Result := TMemoryGuardOnFailure.Create([@AObject1, @AObject2, @AObject3]);
 end;
 
-function ClearThenFreeNilOnException(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
+function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
   TObject(AObject3) := nil;
   TObject(AObject4) := nil;
   Result := TMemoryGuardOnFailure.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4)]);  
+    [@AObject1, @AObject2, @AObject3, @AObject4]);  
 end;
 
-function ClearThenFreeNilOnException(var AObject1; var AObject2; var AObject3; var AObject4; 
+function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -218,10 +218,10 @@ begin
   TObject(AObject4) := nil;
   TObject(AObject5) := nil;
   Result := TMemoryGuardOnFailure.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5)]);    
+    [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5]);    
 end;
 
-function ClearThenFreeNilOnException(var AObject1; var AObject2; var AObject3; var AObject4; 
+function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -231,11 +231,11 @@ begin
   TObject(AObject5) := nil;
   TObject(AObject6) := nil;
   Result := TMemoryGuardOnFailure.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
-    Addr(AObject6)]);   
+    [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5,
+    @AObject6]);   
 end;
 
-function ClearThenFreeNilOnException(var AObject1; var AObject2; var AObject3; var AObject4; 
+function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6; var AObject7): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -246,11 +246,11 @@ begin
   TObject(AObject6) := nil;
   TObject(AObject7) := nil;
   Result := TMemoryGuardOnFailure.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
-    Addr(AObject6), Addr(AObject7)]);    
+    [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5,
+    @AObject6, @AObject7]);    
 end;
 
-function ClearThenFreeNilOnException(var AObject1; var AObject2; var AObject3; var AObject4; 
+function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6; var AObject7; var AObject8): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -262,8 +262,8 @@ begin
   TObject(AObject7) := nil;
   TObject(AObject8) := nil;
   Result := TMemoryGuardOnFailure.Create(
-    [Addr(AObject1), Addr(AObject2), Addr(AObject3), Addr(AObject4), Addr(AObject5),
-    Addr(AObject6), Addr(AObject7), Addr(AObject8)]);
+    [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5,
+    @AObject6, @AObject7, @AObject8]);
 end;
 
 end.

@@ -69,7 +69,7 @@ end;
 
 function CreateDummy(): TDummy;
 begin
-  ClearThenFreeNilOnException(Result);
+  ClearThenFreeNilOnFailure(Result);
   Result := TDummy.Create();
 end;
 
