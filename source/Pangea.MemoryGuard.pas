@@ -67,7 +67,7 @@ destructor TMemoryGuardOnExit.Destroy();
 var 
   LIndex: Integer;
 begin
-  for LIndex := Low(FPointers) to High(FPointers) do
+  for LIndex := High(FPointers) downto Low(FPointers) do
   begin
     FreeAndNil(FPointers[LIndex]^);
   end;
