@@ -121,6 +121,7 @@
         <DCCReference Include="..\DUnitX.Types.pas"/>
         <DCCReference Include="..\DUnitX.Timeout.pas"/>
         <DCCReference Include="source\Pangea.Tuple.pas"/>
+        <DCCReference Include="tests\TestTuple.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

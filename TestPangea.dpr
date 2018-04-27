@@ -45,7 +45,8 @@ uses
   DUnitX.Attributes in '..\DUnitX.Attributes.pas',
   DUnitX.Types in '..\DUnitX.Types.pas',
   DUnitX.Timeout in '..\DUnitX.Timeout.pas',
-  Pangea.Tuple in 'source\Pangea.Tuple.pas';
+  Pangea.Tuple in 'source\Pangea.Tuple.pas',
+  TestTuple in 'tests\TestTuple.pas';
 
 var
   LRunner : ITestRunner;
