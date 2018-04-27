@@ -120,6 +120,8 @@
         <DCCReference Include="..\DUnitX.Attributes.pas"/>
         <DCCReference Include="..\DUnitX.Types.pas"/>
         <DCCReference Include="..\DUnitX.Timeout.pas"/>
+        <DCCReference Include="source\Pangea.Tuple.pas"/>
+        <DCCReference Include="tests\TestTuple.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -142,7 +144,6 @@
                 </Source>
             </Delphi.Personality>
             <Platforms>
-                <Platform value="Linux64">False</Platform>
                 <Platform value="Win32">True</Platform>
             </Platforms>
         </BorlandProject>
