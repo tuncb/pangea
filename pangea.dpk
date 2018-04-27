@@ -9,21 +9,21 @@ package pangea;
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS ON}
+{$LOCALSYMBOLS OFF}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION OFF}
+{$OPTIMIZATION ON}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
-{$REFERENCEINFO ON}
+{$REFERENCEINFO OFF}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES ON}
-{$TYPEDADDRESS OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS ON}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE DEBUG}
+{$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
 {$IMPLICITBUILD ON}
 
@@ -31,6 +31,9 @@ requires
   rtl;
 
 contains
-  Pangea.Optional in 'source\Pangea.Optional.pas';
+  Pangea.Optional in 'source\Pangea.Optional.pas',
+  Pangea.ScopeAction in 'source\Pangea.ScopeAction.pas',
+  Pangea.MemoryGuard in 'source\Pangea.MemoryGuard.pas',
+  Pangea.Tuple in 'source\Pangea.Tuple.pas';
 
 end.
