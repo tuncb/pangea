@@ -16,8 +16,8 @@ type
 type
   TOptional<T> = record
   strict private
-    FHasValue: Boolean;
     FValue: T;
+    FHasValue: Boolean;
 
     function GetValue(): T;
     procedure SetValue(const AValue: T);
