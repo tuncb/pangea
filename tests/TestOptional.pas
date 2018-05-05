@@ -13,6 +13,10 @@ type
     procedure TestEmpty();
     [Test]
     procedure TestFilled();
+    [Test]
+    procedure TestMap();
+    [Test]
+    procedure TestOrElse();
   end;
 
 implementation
@@ -42,6 +46,86 @@ begin
 
   LOptional.Reset();
   Assert.IsFalse(LOptional.HasValue);
+end;
+
+function DecreaseTenIfPositive(const AValue: Integer): TOptional<Integer>; overload;
+begin
+  Result := EMPTY;
+  if (AValue > 0) then
+    Result := AValue - 10;
+end;
+
+function DecreaseTen(const AValue: Integer): Integer; overload;
+begin
+  Result := AValue - 10;
+end;
+
+procedure TTestOptional.TestMap();
+var
+  AValue: TOptional<Integer>;
+begin
+  AValue := TOptional<Integer>(30)
+    .Map(DecreaseTenIfPositive)
+    .Map(DecreaseTenIfPositive)
+    .Map(DecreaseTenIfPositive);
+
+  Assert.IsTrue(AValue.HasValue);
+  Assert.AreEqual(0, AValue.Value);
+
+  AValue := TOptional<Integer>(20)
+    .Map(DecreaseTenIfPositive)
+    .Map(DecreaseTenIfPositive)
+    .Map(DecreaseTenIfPositive)
+    .Map(DecreaseTenIfPositive);
+
+  Assert.IsFalse(AValue.HasValue);
+
+  AValue := TOptional<Integer>(30)
+    .Map(DecreaseTen)
+    .Map(DecreaseTen)
+    .Map(DecreaseTen);
+
+  Assert.IsTrue(AValue.HasValue);
+  Assert.AreEqual(0, AValue.Value);
+
+  AValue := TOptional<Integer>(20)
+    .Map(DecreaseTen)
+    .Map(DecreaseTen)
+    .Map(DecreaseTen)
+    .Map(DecreaseTen);
+
+  Assert.IsTrue(AValue.HasValue);
+  Assert.AreEqual(-20, AValue.Value);
+end;
+
+procedure TTestOptional.TestOrElse();
+var
+  AIsFunctorCalled: Boolean;
+begin
+  AIsFunctorCalled := False;
+
+  TOptional<Integer>(20)
+    .Map(DecreaseTen)
+    .Map(DecreaseTenIfPositive)
+    .Map(DecreaseTenIfPositive)
+    .Map(DecreaseTenIfPositive)
+    .OrElse(procedure()
+      begin
+        AIsFunctorCalled := True;
+      end);
+
+  Assert.IsTrue(AIsFunctorCalled);
+
+  AIsFunctorCalled := False;
+  TOptional<Integer>(20)
+    .Map(DecreaseTenIfPositive)
+    .Map(DecreaseTenIfPositive)
+    .OrElse(procedure()
+      begin
+        AIsFunctorCalled := True;
+      end);
+
+  Assert.IsFalse(AIsFunctorCalled);
 end;
 
 initialization
