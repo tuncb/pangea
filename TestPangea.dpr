@@ -47,7 +47,11 @@ uses
   DUnitX.Timeout in '..\DUnitX.Timeout.pas',
   TestScopeAction in 'tests\TestScopeAction.pas',
   TestMemoryGuard in 'tests\TestMemoryGuard.pas',
-  TestTuple in 'tests\TestTuple.pas';
+  TestTuple in 'tests\TestTuple.pas',
+  Pangea.Tuple in 'source\Pangea.Tuple.pas',
+  Pangea.ScopeAction in 'source\Pangea.ScopeAction.pas',
+  Pangea.MemoryGuard in 'source\Pangea.MemoryGuard.pas',
+  Pangea.Optional in 'source\Pangea.Optional.pas';
 
 var
   LRunner : ITestRunner;

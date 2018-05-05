@@ -3,11 +3,8 @@
         <ProjectGuid>{DC0AD442-2164-48D5-AB3B-3B5F8A4BE283}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="pangea.dproj">
-            <Dependencies/>
-        </Projects>
         <Projects Include="TestPangea.dproj">
-            <Dependencies>pangea.dproj</Dependencies>
+            <Dependencies/>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -17,32 +14,23 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="pangea">
-        <MSBuild Projects="pangea.dproj"/>
-    </Target>
-    <Target Name="pangea:Clean">
-        <MSBuild Projects="pangea.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="pangea:Make">
-        <MSBuild Projects="pangea.dproj" Targets="Make"/>
-    </Target>
-    <Target Name="TestPangea" DependsOnTargets="pangea">
+    <Target Name="TestPangea">
         <MSBuild Projects="TestPangea.dproj"/>
     </Target>
-    <Target Name="TestPangea:Clean" DependsOnTargets="pangea:Clean">
+    <Target Name="TestPangea:Clean">
         <MSBuild Projects="TestPangea.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="TestPangea:Make" DependsOnTargets="pangea:Make">
+    <Target Name="TestPangea:Make">
         <MSBuild Projects="TestPangea.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="pangea;TestPangea"/>
+        <CallTarget Targets="TestPangea"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="pangea:Clean;TestPangea:Clean"/>
+        <CallTarget Targets="TestPangea:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="pangea:Make;TestPangea:Make"/>
+        <CallTarget Targets="TestPangea:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
