@@ -17,6 +17,12 @@ type
     procedure TestMap();
     [Test]
     procedure TestOrElse();
+    [Test]
+    procedure TestTake();
+    [Test]
+    procedure TestConjunctionDisconjunction();
+    [Test]
+    procedure TestMapOr();
   end;
 
 implementation
@@ -58,6 +64,11 @@ end;
 function DecreaseTen(const AValue: Integer): Integer; overload;
 begin
   Result := AValue - 10;
+end;
+
+function GetDefault(): Integer;
+begin
+  Result := 100;
 end;
 
 procedure TTestOptional.TestMap();
@@ -126,6 +137,66 @@ begin
       end);
 
   Assert.IsFalse(AIsFunctorCalled);
+end;
+
+procedure TTestOptional.TestTake();
+const
+  VAL = 10;
+var
+  AOptionalValue: TOptional<Integer>;
+  AValue: Integer;
+begin
+  AOptionalValue := VAL;
+  AValue := AOptionalValue.Take().Value;
+
+  Assert.AreEqual(VAL, AValue);
+  Assert.IsFalse(AOptionalValue.HasValue);
+end;
+
+procedure TTestOptional.TestConjunctionDisconjunction();
+const
+  VAL = 10;
+  OTHER_VAL = 20;
+var
+  AOptionalValue: TOptional<Integer>;
+begin
+  AOptionalValue := VAL;
+  Assert.AreEqual(OTHER_VAL, AOptionalValue.Conjunction(OTHER_VAL).Value);
+
+  AOptionalValue := EMPTY;
+  Assert.AreEqual(OTHER_VAL, AOptionalValue.Disconjunction(OTHER_VAL).Value);
+end;
+
+procedure TTestOptional.TestMapOr();
+const 
+  VAL = 50;
+var
+  AValue: TOptional<Integer>;
+begin
+  AValue := TOptional<Integer>(25)
+    .Map(DecreaseTenIfPositive)
+    .MapOr(DecreaseTen, VAL)
+    .MapOr(DecreaseTenIfPositive, VAL);
+
+  Assert.IsTrue(AValue.HasValue);
+  Assert.AreEqual(-5, AValue.Value);
+
+  AValue := TOptional<Integer>(5)
+    .MapOr(DecreaseTenIfPositive, GetDefault)
+    .MapOr(DecreaseTenIfPositive, GetDefault)
+    .MapOr(DecreaseTenIfPositive, GetDefault);
+
+  Assert.IsTrue(AValue.HasValue);
+  Assert.AreEqual(GetDefault, AValue.Value);
+
+  AValue := TOptional<Integer>(5)
+    .MapOr(DecreaseTenIfPositive, GetDefault)
+    .MapOr(DecreaseTenIfPositive, VAL)
+    .MapOr(DecreaseTenIfPositive, VAL);
+
+  Assert.IsTrue(AValue.HasValue);
+  Assert.AreEqual(VAL, AValue.Value);
+
 end;
 
 initialization
