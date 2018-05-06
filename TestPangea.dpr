@@ -52,7 +52,7 @@ uses
   Pangea.ScopeAction in 'source\Pangea.ScopeAction.pas',
   Pangea.MemoryGuard in 'source\Pangea.MemoryGuard.pas',
   Pangea.Optional in 'source\Pangea.Optional.pas',
-  Pangea.Range in 'source\Pangea.Range.pas';
+  Pangea.Span in 'source\Pangea.Span.pas';
 
 var
   LRunner : ITestRunner;
