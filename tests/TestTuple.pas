@@ -89,4 +89,7 @@ begin
   Assert.AreEqual(VAL4, LValue4);  
 end;
 
+initialization
+  TDUnitX.RegisterTestFixture(TTestTuple);
+
 end.

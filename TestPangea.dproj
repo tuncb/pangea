@@ -141,7 +141,8 @@
         <DCCReference Include="source\Pangea.ScopeAction.pas"/>
         <DCCReference Include="source\Pangea.MemoryGuard.pas"/>
         <DCCReference Include="source\Pangea.Optional.pas"/>
-        <DCCReference Include="source\Pangea.Span.pas"/>
+        <DCCReference Include="source\Pangea.Apply.pas"/>
+        <DCCReference Include="tests\TestApply.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
