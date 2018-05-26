@@ -5,33 +5,33 @@ interface
 uses
   Pangea.ScopeAction;
 
-function ClearThenFreeNilOnExit(var AObject): IScopeAction; overload;
-function ClearThenFreeNilOnExit(var AObject1, AObject2): IScopeAction; overload;
-function ClearThenFreeNilOnExit(var AObject1, AObject2, AObject3): IScopeAction; overload;
-function ClearThenFreeNilOnExit
+function GuardMemoryOnExit(var AObject): IScopeAction; overload;
+function GuardMemoryOnExit(var AObject1, AObject2): IScopeAction; overload;
+function GuardMemoryOnExit(var AObject1, AObject2, AObject3): IScopeAction; overload;
+function GuardMemoryOnExit
   (var AObject1, AObject2, AObject3, AObject4): IScopeAction; overload;
-function ClearThenFreeNilOnExit
+function GuardMemoryOnExit
   (var AObject1, AObject2, AObject3, AObject4, AObject5): IScopeAction; overload;
-function ClearThenFreeNilOnExit
+function GuardMemoryOnExit
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6): IScopeAction; overload;
-function ClearThenFreeNilOnExit
+function GuardMemoryOnExit
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, AObject7): IScopeAction; overload;
-function ClearThenFreeNilOnExit
+function GuardMemoryOnExit
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, AObject7, AObject8): IScopeAction; overload;
 
-function ClearThenFreeNilOnFailure(var AObject): IScopeAction; overload;
-function ClearThenFreeNilOnFailure(var AObject1, AObject2): IScopeAction; overload;
-function ClearThenFreeNilOnFailure(var AObject1, AObject2, AObject3): IScopeAction; overload;
-function ClearThenFreeNilOnFailure
+function GuardMemoryOnFailure(var AObject): IScopeAction; overload;
+function GuardMemoryOnFailure(var AObject1, AObject2): IScopeAction; overload;
+function GuardMemoryOnFailure(var AObject1, AObject2, AObject3): IScopeAction; overload;
+function GuardMemoryOnFailure
   (var AObject1, AObject2, AObject3, AObject4): IScopeAction; overload;
-function ClearThenFreeNilOnFailure
+function GuardMemoryOnFailure
   (var AObject1, AObject2, AObject3, AObject4, AObject5): IScopeAction; overload;
-function ClearThenFreeNilOnFailure
+function GuardMemoryOnFailure
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6): IScopeAction; overload;
-function ClearThenFreeNilOnFailure
+function GuardMemoryOnFailure
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, 
   AObject7): IScopeAction; overload;
-function ClearThenFreeNilOnFailure
+function GuardMemoryOnFailure
   (var AObject1, AObject2, AObject3, AObject4, AObject5, AObject6, 
   AObject7, AObject8): IScopeAction; overload;
 
@@ -90,20 +90,20 @@ begin
   inherited Destroy();
 end;
 
-function ClearThenFreeNilOnExit(var AObject): IScopeAction;
+function GuardMemoryOnExit(var AObject): IScopeAction;
 begin
   TObject(AObject) := nil;
   Result := TMemoryGuardOnExit.Create([@AObject]);
 end;
 
-function ClearThenFreeNilOnExit(var AObject1; var AObject2): IScopeAction;
+function GuardMemoryOnExit(var AObject1; var AObject2): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
   Result := TMemoryGuardOnExit.Create([@AObject1, @AObject2]);
 end;
 
-function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3): IScopeAction;
+function GuardMemoryOnExit(var AObject1; var AObject2; var AObject3): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
@@ -111,7 +111,7 @@ begin
   Result := TMemoryGuardOnExit.Create([@AObject1, @AObject2, @AObject3]);
 end;
 
-function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
+function GuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
@@ -121,7 +121,7 @@ begin
     [@AObject1, @AObject2, @AObject3, @AObject4]);  
 end;
 
-function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
+function GuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -133,7 +133,7 @@ begin
     [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5]);    
 end;
 
-function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
+function GuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -147,7 +147,7 @@ begin
     @AObject6]);   
 end;
 
-function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
+function GuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6; var AObject7): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -162,7 +162,7 @@ begin
     @AObject6, @AObject7]);    
 end;
 
-function ClearThenFreeNilOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
+function GuardMemoryOnExit(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6; var AObject7; var AObject8): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -178,20 +178,20 @@ begin
     @AObject6, @AObject7, @AObject8]);
 end;
 
-function ClearThenFreeNilOnFailure(var AObject): IScopeAction;
+function GuardMemoryOnFailure(var AObject): IScopeAction;
 begin
   TObject(AObject) := nil;
   Result := TMemoryGuardOnFailure.Create([@AObject]);
 end;
 
-function ClearThenFreeNilOnFailure(var AObject1; var AObject2): IScopeAction;
+function GuardMemoryOnFailure(var AObject1; var AObject2): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
   Result := TMemoryGuardOnFailure.Create([@AObject1, @AObject2]);
 end;
 
-function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3): IScopeAction;
+function GuardMemoryOnFailure(var AObject1; var AObject2; var AObject3): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
@@ -199,7 +199,7 @@ begin
   Result := TMemoryGuardOnFailure.Create([@AObject1, @AObject2, @AObject3]);
 end;
 
-function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
+function GuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4): IScopeAction;
 begin
   TObject(AObject1) := nil;
   TObject(AObject2) := nil;
@@ -209,7 +209,7 @@ begin
     [@AObject1, @AObject2, @AObject3, @AObject4]);  
 end;
 
-function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
+function GuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -221,7 +221,7 @@ begin
     [@AObject1, @AObject2, @AObject3, @AObject4, @AObject5]);    
 end;
 
-function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
+function GuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -235,7 +235,7 @@ begin
     @AObject6]);   
 end;
 
-function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
+function GuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6; var AObject7): IScopeAction;
 begin
   TObject(AObject1) := nil;
@@ -250,7 +250,7 @@ begin
     @AObject6, @AObject7]);    
 end;
 
-function ClearThenFreeNilOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
+function GuardMemoryOnFailure(var AObject1; var AObject2; var AObject3; var AObject4; 
   var AObject5; var AObject6; var AObject7; var AObject8): IScopeAction;
 begin
   TObject(AObject1) := nil;

@@ -82,7 +82,7 @@ end;
 
 function CreateDummy(): TDummy;
 begin
-  ClearThenFreeNilOnFailure(Result);
+  GuardMemoryOnFailure(Result);
   Result := TDummy.Create();
 end;
 
@@ -90,7 +90,7 @@ procedure TTestMemoryGuard.TestSyntax();
 var
   LDummy1, LDummy2, LDummy3: TDummy;
 begin
-  ClearThenFreeNilOnExit(LDummy1, LDummy2, LDummy3);
+  GuardMemoryOnExit(LDummy1, LDummy2, LDummy3);
   LDummy1 := TDummy.Create();
   LDummy2 := TDummy.Create();
   LDummy3 := CreateDummy();
@@ -126,7 +126,7 @@ begin
     begin
       TestForNrObjects(1, 1, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnExit(AObjects[0]);
+          Result := GuardMemoryOnExit(AObjects[0]);
         end);
     end, EDummyException);
 
@@ -134,7 +134,7 @@ begin
     begin
       TestForNrObjects(2, 2, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnExit(AObjects[0], AObjects[1]);
+          Result := GuardMemoryOnExit(AObjects[0], AObjects[1]);
         end)
     end, EDummyException);
 
@@ -142,7 +142,7 @@ begin
     begin
       TestForNrObjects(3, 3, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnExit(AObjects[0], AObjects[1], AObjects[2]);
+          Result := GuardMemoryOnExit(AObjects[0], AObjects[1], AObjects[2]);
         end)
     end, EDummyException);
 
@@ -150,7 +150,7 @@ begin
     begin
       TestForNrObjects(4, 4, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnExit(
+          Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3]);
         end)
     end, EDummyException);
@@ -159,7 +159,7 @@ begin
     begin
       TestForNrObjects(5, 5, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnExit(
+          Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4]);
         end)
     end, EDummyException);
@@ -168,7 +168,7 @@ begin
     begin
       TestForNrObjects(6, 6, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnExit(
+          Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5]);
         end)
     end, EDummyException);
@@ -177,7 +177,7 @@ begin
     begin
       TestForNrObjects(7, 7, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnExit(
+          Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
             AObjects[6]);
         end)
@@ -187,7 +187,7 @@ begin
     begin
       TestForNrObjects(8, 8, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnExit(
+          Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
             AObjects[6], AObjects[7]);
         end)
@@ -200,7 +200,7 @@ begin
     begin
       TestForNrObjects(1, 1, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnFailure(AObjects[0]);
+          Result := GuardMemoryOnFailure(AObjects[0]);
         end);
     end, EDummyException);
 
@@ -208,7 +208,7 @@ begin
     begin
       TestForNrObjects(2, 2, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnFailure(AObjects[0], AObjects[1]);
+          Result := GuardMemoryOnFailure(AObjects[0], AObjects[1]);
         end)
     end, EDummyException);
 
@@ -216,7 +216,7 @@ begin
     begin
       TestForNrObjects(3, 3, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnFailure(AObjects[0], AObjects[1], AObjects[2]);
+          Result := GuardMemoryOnFailure(AObjects[0], AObjects[1], AObjects[2]);
         end)
     end, EDummyException);
 
@@ -224,7 +224,7 @@ begin
     begin
       TestForNrObjects(4, 4, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnFailure(
+          Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3]);
         end)
     end, EDummyException);
@@ -233,7 +233,7 @@ begin
     begin
       TestForNrObjects(5, 5, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnFailure(
+          Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4]);
         end)
     end, EDummyException);
@@ -242,7 +242,7 @@ begin
     begin
       TestForNrObjects(6, 6, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnFailure(
+          Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5]);
         end)
     end, EDummyException);
@@ -251,7 +251,7 @@ begin
     begin
       TestForNrObjects(7, 7, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnFailure(
+          Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
             AObjects[6]);
         end)
@@ -261,7 +261,7 @@ begin
     begin
       TestForNrObjects(8, 8, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
-          Result := ClearThenFreeNilOnFailure(
+          Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
             AObjects[6], AObjects[7]);
         end)
@@ -276,7 +276,7 @@ begin
   TestForNrObjects(8, 0, False, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
       LObjects := AObjects;
-      Result := ClearThenFreeNilOnFailure(
+      Result := GuardMemoryOnFailure(
         AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
         AObjects[6], AObjects[7]);
     end);
