@@ -10,8 +10,6 @@ type
   TTestMemoryGuard = class
   public
     [Test]
-    procedure TestSyntax();
-    [Test]
     procedure TestMemoryGuardOnExit();
     [Test]
     procedure TestMemoryGuardOnFailureWithFailure();
@@ -32,10 +30,6 @@ type
   public
     constructor Create(var ADestructorCallCounter: Integer);
     destructor Destroy(); override;
-  end;
-
-type
-  TDummy = class
   end;
 
 type
@@ -90,22 +84,6 @@ begin
 end;
 
 {$WARN USE_BEFORE_DEF ON}
-
-function CreateDummy(): TDummy;
-begin
-  GuardMemoryOnFailure(Result);
-  Result := TDummy.Create();
-end;
-
-procedure TTestMemoryGuard.TestSyntax();
-var
-  LDummy1, LDummy2, LDummy3: TDummy;
-begin
-  GuardMemoryOnExit(LDummy1, LDummy2, LDummy3);
-  LDummy1 := TDummy.Create();
-  LDummy2 := TDummy.Create();
-  LDummy3 := CreateDummy();
-end;
 
 procedure TestForNrObjects(
   const ANrObjects, ANrExpectedDestructions: Integer;
