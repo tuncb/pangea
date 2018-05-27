@@ -10,7 +10,9 @@ type
   TTestMemoryGuard = class
   public
     [Test]
-    procedure TestMemoryGuardOnExit();
+    procedure TestMemoryGuardOnExitWithFailure();
+    [Test]
+    procedure TestMemoryGuardOnExitWithoutFailure();      
     [Test]
     procedure TestMemoryGuardOnFailureWithFailure();
     [Test]
@@ -88,7 +90,7 @@ end;
 procedure TestForNrObjects(
   const ANrObjects, ANrExpectedDestructions: Integer;
   const AIsExceptionRaised: Boolean;
-  const AExecuteGuard: TFunc<TArray<TDestructorLogger>, IScopeAction>);
+  const AExecuteGuardFun: TFunc<TArray<TDestructorLogger>, IScopeAction>);
 var
   LDestructionCounter: Integer;
 begin
@@ -98,7 +100,7 @@ begin
     var
       LIndex: Integer;
     begin
-      Result := AExecuteGuard(AObjects);
+      Result := AExecuteGuardFun(AObjects);
       for LIndex := Low(AObjects) to High(AObjects) do
       begin
         Assert.IsFalse(Assigned(AObjects[LIndex]));
@@ -109,7 +111,22 @@ begin
   Assert.AreEqual(LDestructionCounter, ANrExpectedDestructions);
 end;
 
-procedure TTestMemoryGuard.TestMemoryGuardOnExit();
+procedure TestForNrObjectsAndDestroy(const ANrObjects: Integer;
+  const AExecuteGuardFun: TFunc<TArray<TDestructorLogger>, IScopeAction>);
+var
+  LObjects: TArray<TDestructorLogger>;
+  LIndex: Integer;
+begin
+  TestForNrObjects(ANrObjects, 0, False, AExecuteGuardFun);
+
+  for LIndex := Low(LObjects) to High(LObjects) do
+  begin
+    Assert.AreEqual(Assigned(LObjects[LIndex]), False);
+    FreeAndNil(LObjects[LIndex]);
+  end;
+end;
+
+procedure TTestMemoryGuard.TestMemoryGuardOnExitWithFailure();
 begin
   Assert.WillRaise(procedure()
     begin
@@ -181,6 +198,58 @@ begin
             AObjects[6], AObjects[7]);
         end)
     end, EDummyException);
+end;
+
+procedure TTestMemoryGuard.TestMemoryGuardOnExitWithoutFailure();
+const 
+  DONT_RAISE = False;
+begin
+  TestForNrObjects(1, 1, DONT_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnExit(AObjects[0]);
+    end);
+
+  TestForNrObjects(2, 2, DONT_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnExit(AObjects[0], AObjects[1]);
+    end);
+
+  TestForNrObjects(3, 3, DONT_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnExit(AObjects[0], AObjects[1], AObjects[2]);
+    end);
+
+  TestForNrObjects(4, 4, DONT_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnExit(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3]);
+    end);
+
+  TestForNrObjects(5, 5, DONT_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnExit(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4]);
+    end);
+
+  TestForNrObjects(6, 6, DONT_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnExit(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5]);
+    end);
+
+  TestForNrObjects(7, 7, DONT_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnExit(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
+        AObjects[6]);
+    end);                        
+
+  TestForNrObjects(8, 8, DONT_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnExit(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
+        AObjects[6], AObjects[7]);
+    end);  
 end;
 
 procedure TTestMemoryGuard.TestMemoryGuardOnFailureWithFailure();
@@ -258,23 +327,53 @@ begin
 end;
 
 procedure TTestMemoryGuard.TestMemoryGuardOnFailureWithoutFailure();
-var
-  LObjects: TArray<TDestructorLogger>;
-  LIndex: Integer;
 begin
-  TestForNrObjects(8, 0, False, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+  TestForNrObjectsAndDestroy(1, function(AObjects: TArray<TDestructorLogger>): IScopeAction
     begin
-      LObjects := AObjects;
+      Result := GuardMemoryOnFailure(AObjects[0]);
+    end);
+
+  TestForNrObjectsAndDestroy(2, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnFailure(AObjects[0], AObjects[1]);
+    end);
+
+  TestForNrObjectsAndDestroy(3, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnFailure(AObjects[0], AObjects[1], AObjects[2]);
+    end);
+
+  TestForNrObjectsAndDestroy(4, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnFailure(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3]);
+    end);
+
+  TestForNrObjectsAndDestroy(5, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnFailure(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4]);
+    end);
+
+  TestForNrObjectsAndDestroy(6, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnFailure(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5]);
+    end);
+
+  TestForNrObjectsAndDestroy(7, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
+      Result := GuardMemoryOnFailure(
+        AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
+        AObjects[6]);
+    end);                        
+
+  TestForNrObjectsAndDestroy(8, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+    begin
       Result := GuardMemoryOnFailure(
         AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
         AObjects[6], AObjects[7]);
     end);
-
-  for LIndex := Low(LObjects) to High(LObjects) do
-  begin
-    Assert.IsTrue(Assigned(LObjects[LIndex]));
-    FreeAndNil(LObjects[LIndex]);
-  end;
 end;
 
 initialization
