@@ -127,10 +127,12 @@ begin
 end;
 
 procedure TTestMemoryGuard.TestMemoryGuardOnExitWithFailure();
+const
+  DO_RAISE = True;
 begin
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(1, 1, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(1, 1, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnExit(AObjects[0]);
         end);
@@ -138,7 +140,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(2, 2, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(2, 2, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnExit(AObjects[0], AObjects[1]);
         end)
@@ -146,7 +148,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(3, 3, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(3, 3, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnExit(AObjects[0], AObjects[1], AObjects[2]);
         end)
@@ -154,7 +156,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(4, 4, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(4, 4, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3]);
@@ -163,7 +165,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(5, 5, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(5, 5, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4]);
@@ -172,7 +174,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(6, 6, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(6, 6, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5]);
@@ -181,7 +183,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(7, 7, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(7, 7, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
@@ -191,7 +193,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(8, 8, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(8, 8, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnExit(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
@@ -253,10 +255,12 @@ begin
 end;
 
 procedure TTestMemoryGuard.TestMemoryGuardOnFailureWithFailure();
+const
+  DO_RAISE = True;
 begin
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(1, 1, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(1, 1, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnFailure(AObjects[0]);
         end);
@@ -264,7 +268,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(2, 2, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(2, 2, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnFailure(AObjects[0], AObjects[1]);
         end)
@@ -272,7 +276,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(3, 3, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(3, 3, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnFailure(AObjects[0], AObjects[1], AObjects[2]);
         end)
@@ -280,7 +284,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(4, 4, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(4, 4, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3]);
@@ -289,7 +293,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(5, 5, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(5, 5, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4]);
@@ -298,7 +302,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(6, 6, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(6, 6, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5]);
@@ -307,7 +311,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(7, 7, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(7, 7, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
@@ -317,7 +321,7 @@ begin
 
   Assert.WillRaise(procedure()
     begin
-      TestForNrObjects(8, 8, True, function(AObjects: TArray<TDestructorLogger>): IScopeAction
+      TestForNrObjects(8, 8, DO_RAISE, function(AObjects: TArray<TDestructorLogger>): IScopeAction
         begin
           Result := GuardMemoryOnFailure(
             AObjects[0], AObjects[1], AObjects[2], AObjects[3], AObjects[4], AObjects[5],
