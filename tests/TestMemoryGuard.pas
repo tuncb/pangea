@@ -55,6 +55,9 @@ begin
   inherited Destroy();
 end;
 
+// Disable warning for unititialized variable: LUninitializedDestructorLogger
+{$WARN USE_BEFORE_DEF OFF}
+
 procedure LogDestruction(
   const ANrObjects: Integer;
   const AExecuteGuard: TFunc<TArray<TDestructorLogger>, IScopeAction>;
@@ -63,8 +66,14 @@ procedure LogDestruction(
 var
   LObjects: TArray<TDestructorLogger>;
   LIndex: Integer;
+  LUninitializedDestructorLogger: TDestructorLogger;
 begin
   SetLength(LObjects, ANrObjects);
+
+  for LIndex := Low(LObjects) to High(Lobjects) do
+  begin
+    LObjects[LIndex] := LUninitializedDestructorLogger;
+  end;
 
   AExecuteGuard(LObjects);
 
@@ -79,6 +88,8 @@ begin
   end;
 
 end;
+
+{$WARN USE_BEFORE_DEF ON}
 
 function CreateDummy(): TDummy;
 begin
