@@ -51,7 +51,8 @@ uses
   Pangea.Tuple in 'source\Pangea.Tuple.pas',
   Pangea.ScopeAction in 'source\Pangea.ScopeAction.pas',
   Pangea.MemoryGuard in 'source\Pangea.MemoryGuard.pas',
-  Pangea.Optional in 'source\Pangea.Optional.pas';
+  Pangea.Optional in 'source\Pangea.Optional.pas',
+  Pangea.ObjectRef in 'source\Pangea.ObjectRef.pas';
 
 var
   LRunner : ITestRunner;
