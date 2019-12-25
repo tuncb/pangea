@@ -63,7 +63,12 @@ uses
   Pangea.ScopeAction in 'source\Pangea.ScopeAction.pas',
   Pangea.Tuple in 'source\Pangea.Tuple.pas',
   Pangea.MemoryGuard in 'source\Pangea.MemoryGuard.pas',
-  Pangea.Optional in 'source\Pangea.Optional.pas';
+  Pangea.Optional in 'source\Pangea.Optional.pas',
+  Pangea.Pipeline.Range in 'source\Pangea.Pipeline.Range.pas',
+  Pangea.Pipeline.ArrayRange in 'source\Pangea.Pipeline.ArrayRange.pas',
+  Pangea.Pipeline.ListRange in 'source\Pangea.Pipeline.ListRange.pas',
+  Pangea.Pipeline in 'source\Pangea.Pipeline.pas',
+  TestPipeline in 'tests\TestPipeline.pas';
 
 {$R *.RES}
 
