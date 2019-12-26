@@ -11,46 +11,54 @@ type
   TListRange<T> = class(TInterfacedObject, IRange<T>)
   strict private
     FList: TList<T>;
-    LIndex: Integer;
+    FInclusiveStartIndex: Integer;
+    FInclusiveEndIndex: Integer;
   public
-    function GetCurrent(): T;
-    procedure SetCurrent(const AValue: T);
-    function MoveNext(): Boolean;
-    procedure Reset();
+    function GetInclusiveStart(): Integer;
+    function GetInclusiveEnd(): Integer;
 
-    constructor Create(const AList: TList<T>);
+    function GetValue(const AIndex: Integer): T;
+    procedure SetValue(const AIndex: Integer; const AValue: T);
+
+    constructor Create(const AList: TList<T>;
+      const AInclusiveStart: Integer = INVALID_INDEX; AInclusiveEnd: Integer = INVALID_INDEX);
   end;
 
 implementation
 
-function TListRange<T>.GetCurrent(): T;
-begin
-  Result := FList[LIndex];
-end;
+uses
+  System.Math;
 
-procedure TListRange<T>.SetCurrent(const AValue: T);
-begin
-  FList[LIndex] := AValue;
-end;
-
-function TListRange<T>.MoveNext(): Boolean;
-begin
-  Inc(LIndex);
-  Result := LIndex < FList.Count;
-end;
-
-procedure TListRange<T>.Reset();
-begin
-  LIndex := 0;
-end;
-
-constructor TListRange<T>.Create(const AList: TList<T>);
+constructor TListRange<T>.Create(const AList: TList<T>;
+  const AInclusiveStart: Integer = INVALID_INDEX; AInclusiveEnd: Integer = INVALID_INDEX);
 begin
   if not Assigned(AList) then
     raise Exception.Create('AList is not assigned for TListRange<T>.Create');
 
   FList := AList;
-  Reset();
+
+  FInclusiveStartIndex := IfThen(AInclusiveStart < 0, 0, AInclusiveStart);
+  FInclusiveEndIndex := IfThen(AInclusiveEnd < 0, FList.Count - 1, AInclusiveEnd);
+end;
+
+function TListRange<T>.GetInclusiveStart: Integer;
+begin
+  Result := FInclusiveStartIndex;
+end;
+
+function TListRange<T>.GetInclusiveEnd: Integer;
+begin
+  Result := FInclusiveEndIndex;
+end;
+
+function TListRange<T>.GetValue(const AIndex: Integer): T;
+begin
+  Result := FList[AIndex];
+end;
+
+procedure TListRange<T>.SetValue(const AIndex: Integer; const AValue: T);
+begin
+  FList[AIndex] := AValue;
 end;
 
 end.

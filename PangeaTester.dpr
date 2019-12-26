@@ -68,7 +68,9 @@ uses
   Pangea.Pipeline.ArrayRange in 'source\Pangea.Pipeline.ArrayRange.pas',
   Pangea.Pipeline.ListRange in 'source\Pangea.Pipeline.ListRange.pas',
   Pangea.Pipeline in 'source\Pangea.Pipeline.pas',
-  TestPipeline in 'tests\TestPipeline.pas';
+  TestPipeline in 'tests\TestPipeline.pas',
+  Pangea.Pipeline.ExecutionPolicy in 'source\Pangea.Pipeline.ExecutionPolicy.pas',
+  Pangea.Pipeline.ExecutionPolicy.Parallel in 'source\Pangea.Pipeline.ExecutionPolicy.Parallel.pas';
 
 {$R *.RES}
 

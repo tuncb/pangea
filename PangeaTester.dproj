@@ -111,6 +111,8 @@
         <DCCReference Include="source\Pangea.Pipeline.ListRange.pas"/>
         <DCCReference Include="source\Pangea.Pipeline.pas"/>
         <DCCReference Include="tests\TestPipeline.pas"/>
+        <DCCReference Include="source\Pangea.Pipeline.ExecutionPolicy.pas"/>
+        <DCCReference Include="source\Pangea.Pipeline.ExecutionPolicy.Parallel.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

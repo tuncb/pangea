@@ -3,6 +3,8 @@ unit Pangea.Pipeline;
 interface
 
 uses
+  Pangea.Optional,
+  Pangea.Pipeline.ExecutionPolicy,
   Pangea.Pipeline.Range,
   System.Generics.Collections;
 
@@ -11,11 +13,8 @@ type
 
 type
   IPipe<T> = interface['{15112A97-4A0B-4EF5-A123-03830D84A7B2}']
-    procedure ForEach(const AMutatingFunc: TMutateFunc<T>);
+    function ForEach(const AMutatingFunc: TMutateFunc<T>; const AExecutionPolicy: IExecutionPolicy = nil): IPipe<T>;
   end;
-
-const
-  INVALID_INDEX = -1;
 
 type
   TPipe<T> = class(TInterfacedObject, IPipe<T>)
@@ -23,7 +22,7 @@ type
     FRange: IRange<T>;
   public
     constructor Create(const ARange: IRange<T>);
-    procedure ForEach(const AMutatingFunc: TMutateFunc<T>);
+    function ForEach(const AMutatingFunc: TMutateFunc<T>; const AExecutionPolicy: IExecutionPolicy = nil): IPipe<T>;
   end;
 
 type
@@ -42,12 +41,14 @@ begin
   Result := TPipe<T>.Create(ARange);
 end;
 
-procedure TPipe<T>.ForEach(const AMutatingFunc: TMutateFunc<T>);
+function TPipe<T>.ForEach(const AMutatingFunc: TMutateFunc<T>; const AExecutionPolicy: IExecutionPolicy): IPipe<T>;
 begin
-  FRange.Reset();
-  repeat
-    FRange.Current := AMutatingFunc(FRange.Current);
-  until not FRange.MoveNext();
+  GetExecutionPolicy(AExecutionPolicy).ForAll(FRange.GetInclusiveStart(), FRange.GetInclusiveEnd(),
+    procedure(AIndex: Integer)
+    begin
+      FRange[AIndex] := AMutatingFunc(FRange[AIndex]);
+    end);
+  Result := Self;
 end;
 
 constructor TPipe<T>.Create(const ARange: IRange<T>);

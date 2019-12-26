@@ -18,12 +18,13 @@ type
 implementation
 
 uses
-  System.Generics.Collections,
   Pangea.MemoryGuard,
   Pangea.Pipeline,
-  Pangea.Pipeline.Range,
   Pangea.Pipeline.ArrayRange,
-  Pangea.Pipeline.ListRange;
+  Pangea.Pipeline.ExecutionPolicy.Parallel,
+  Pangea.Pipeline.ListRange,
+  Pangea.Pipeline.Range,
+  System.Generics.Collections;
 
 const
   NCOUNT = 100;
@@ -32,21 +33,35 @@ procedure TestForEach(const ARange: IRange<Integer>);
 const
   VALUE = 55;
 var
-  LSetFunc: TMutateFunc<Integer>;
+  LSetFunc, LCheckValueFunc: TMutateFunc<Integer>;
 begin
   LSetFunc := function(const AValue: Integer): Integer
     begin
       Result := VALUE;
     end;
 
+  LCheckValueFunc := function(const AValue: Integer): Integer
+    begin
+      Assert.AreEqual(VALUE, AValue);
+      Result := AValue;
+    end;
+
   TPipeline<Integer>
     .Start(ARange)
-    .ForEach(LSetFunc);
+    .ForEach(LSetFunc)
+    .ForEach(LCheckValueFunc);
 
-  ARange.Reset();
-  repeat
-    Assert.AreEqual(VALUE, ARange.Current);
-  until ARange.MoveNext();
+  TPipeline<Integer>
+  .Start(ARange)
+  .ForEach(function(const AValue: Integer): Integer
+    begin
+      Result := 0;
+    end);
+
+  TPipeline<Integer>
+    .Start(ARange)
+    .ForEach(LSetFunc, TParallelExecutionPolicy.Create())
+    .ForEach(LCheckValueFunc, TParallelExecutionPolicy.Create());
 end;
 
 procedure TTestForEach.TestArray();

@@ -9,43 +9,50 @@ type
   TArrayRange<T> = class(TInterfacedObject, IRange<T>)
   strict private
     FArray: TArray<T>;
-    LIndex: Integer;
+    FInclusiveStartIndex: Integer;
+    FInclusiveEndIndex: Integer;
   public
-    function GetCurrent(): T;
-    procedure SetCurrent(const AValue: T);
-    function MoveNext(): Boolean;
-    procedure Reset();
+    function GetInclusiveStart(): Integer;
+    function GetInclusiveEnd(): Integer;
 
-    constructor Create(const AArray: TArray<T>);
+    function GetValue(const AIndex: Integer): T;
+    procedure SetValue(const AIndex: Integer; const AValue: T);
+
+    constructor Create(const AArray: TArray<T>;
+      const AInclusiveStart: Integer = INVALID_INDEX; AInclusiveEnd: Integer = INVALID_INDEX);
   end;
 
 implementation
 
-function TArrayRange<T>.GetCurrent(): T;
-begin
-  Result := FArray[LIndex];
-end;
+uses
+  System.Math;
 
-procedure TArrayRange<T>.SetCurrent(const AValue: T);
-begin
-  FArray[LIndex] := AValue;
-end;
-
-function TArrayRange<T>.MoveNext(): Boolean;
-begin
-  Inc(LIndex);
-  Result := LIndex < Length(FArray);
-end;
-
-procedure TArrayRange<T>.Reset();
-begin
-  LIndex := 0;
-end;
-
-constructor TArrayRange<T>.Create(const AArray: TArray<T>);
+constructor TArrayRange<T>.Create(const AArray: TArray<T>;
+  const AInclusiveStart: Integer = INVALID_INDEX; AInclusiveEnd: Integer = INVALID_INDEX);
 begin
   FArray := AArray;
-  Reset();
+  FInclusiveStartIndex := IfThen(AInclusiveStart < 0, 0, AInclusiveStart);
+  FInclusiveEndIndex := IfThen(AInclusiveEnd < 0, Length(FArray) - 1, AInclusiveEnd);
+end;
+
+function TArrayRange<T>.GetInclusiveStart: Integer;
+begin
+  Result := FInclusiveStartIndex;
+end;
+
+function TArrayRange<T>.GetInclusiveEnd: Integer;
+begin
+  Result := FInclusiveEndIndex;
+end;
+
+function TArrayRange<T>.GetValue(const AIndex: Integer): T;
+begin
+  Result := FArray[AIndex];
+end;
+
+procedure TArrayRange<T>.SetValue(const AIndex: Integer; const AValue: T);
+begin
+  FArray[AIndex] := AValue;
 end;
 
 end.
