@@ -18,6 +18,8 @@ type
     function GetValue(const AIndex: Integer): T;
     procedure SetValue(const AIndex: Integer; const AValue: T);
 
+    procedure Resize(const AInclusiveEnd: Integer);
+
     constructor Create(const AArray: TArray<T>;
       const AInclusiveStart: Integer = INVALID_INDEX; AInclusiveEnd: Integer = INVALID_INDEX);
   end;
@@ -53,6 +55,12 @@ end;
 procedure TArrayRange<T>.SetValue(const AIndex: Integer; const AValue: T);
 begin
   FArray[AIndex] := AValue;
+end;
+
+procedure TArrayRange<T>.Resize(const AInclusiveEnd: Integer);
+begin
+  if Length(FArray) <= AInclusiveEnd then
+    SetLength(FArray, AInclusiveEnd + 1);
 end;
 
 end.

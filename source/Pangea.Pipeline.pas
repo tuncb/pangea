@@ -10,6 +10,7 @@ uses
 
 type
   TMutateFunc<T> = reference to function(const AValue: T): T;
+  TMapFunc<T, R> = reference to function(const AValue: T): R;
 
 type
   TPipe<T> = record
@@ -18,6 +19,7 @@ type
   public
     constructor Create(const ARange: IRange<T>);
     function ForEach(const AMutatingFunc: TMutateFunc<T>; const AExecutionPolicy: IExecutionPolicy = nil): TPipe<T>;
+    function Map<R>(const ANewRange: IRange<R>; const AMapFunc: TMapFunc<T, R>; const AExecutionPolicy: IExecutionPolicy = nil): TPipe<R>;
   end;
 
 type
@@ -55,6 +57,24 @@ begin
     raise Exception.Create('ARange argument is nil for TPipeline<T>.Create');
 
   FRange := ARange;
+end;
+
+function TPipe<T>.Map<R>(const ANewRange: IRange<R>; const AMapFunc: TMapFunc<T, R>; const AExecutionPolicy: IExecutionPolicy): TPipe<R>;
+var
+  LRange: IRange<T>;
+  LNewStartingIndex: Integer;
+begin
+  LRange := FRange;
+  LNewStartingIndex := ANewRange.GetInclusiveStart();
+  ANewRange.Resize(LNewStartingIndex
+    + LRange.GetInclusiveEnd() - LRange.GetInclusiveStart() + 1);
+
+  GetExecutionPolicy(AExecutionPolicy).ForAll(FRange.GetInclusiveStart(), FRange.GetInclusiveEnd(),
+    procedure(AIndex: Integer)
+    begin
+      ANewRange[LNewStartingIndex + AIndex] := AMapFunc(LRange[AIndex]);
+    end);
+  Result := TPipe<R>.Create(ANewRange);
 end;
 
 end.

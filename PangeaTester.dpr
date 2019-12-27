@@ -70,7 +70,8 @@ uses
   Pangea.Pipeline in 'source\Pangea.Pipeline.pas',
   TestPipeline in 'tests\TestPipeline.pas',
   Pangea.Pipeline.ExecutionPolicy in 'source\Pangea.Pipeline.ExecutionPolicy.pas',
-  Pangea.Pipeline.ExecutionPolicy.Parallel in 'source\Pangea.Pipeline.ExecutionPolicy.Parallel.pas';
+  Pangea.Pipeline.ExecutionPolicy.Parallel in 'source\Pangea.Pipeline.ExecutionPolicy.Parallel.pas',
+  Pangea.Pipeline.FunctionFactory in 'source\Pangea.Pipeline.FunctionFactory.pas';
 
 {$R *.RES}
 
