@@ -48,11 +48,7 @@ const
 procedure TestForEach(const ARange: IRange<Integer>);
 const
   VALUE = 55;
-var
-  LParallel: IExecutionPolicy;
 begin
-  LParallel := TParallelExecutionPolicy.Create();
-
   TPipeline<Integer>
     .Start(ARange)
     .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(VALUE))
@@ -60,9 +56,9 @@ begin
 
   TPipeline<Integer>
     .Start(ARange)
-    .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(0), LParallel)
-    .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(VALUE), LParallel)
-    .ForEach(TPipelineTestUtilities.GetAssertEqualFunc<Integer>(VALUE), LParallel);
+    .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(0), ParallelExecutionPolicy)
+    .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(VALUE), ParallelExecutionPolicy)
+    .ForEach(TPipelineTestUtilities.GetAssertEqualFunc<Integer>(VALUE), ParallelExecutionPolicy);
 end;
 
 procedure TTestForEach.TestArray();
