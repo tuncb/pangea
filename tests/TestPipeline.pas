@@ -56,9 +56,9 @@ begin
 
   TPipeline<Integer>
     .Start(ARange)
-    .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(0), ParallelExecutionPolicy)
-    .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(VALUE), ParallelExecutionPolicy)
-    .ForEach(TPipelineTestUtilities.GetAssertEqualFunc<Integer>(VALUE), ParallelExecutionPolicy);
+    .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(0), TParallelExecutionPolicy<Integer, Integer>.Create())
+    .ForEach(TFunctionFactory.GetConstantValueFunction<Integer>(VALUE), TParallelExecutionPolicy<Integer, Integer>.Create())
+    .ForEach(TPipelineTestUtilities.GetAssertEqualFunc<Integer>(VALUE), TParallelExecutionPolicy<Integer, Integer>.Create());
 end;
 
 procedure TTestForEach.TestArray();
